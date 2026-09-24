@@ -1,0 +1,105 @@
+[gd_scene format=3 uid="uid://co3l6oi6vuyir"]
+
+[ext_resource type="Script" uid="uid://icfnei4a3an1" path="res://Main.cs" id="1_ig7tw"]
+
+[node name="Main" type="Control" unique_id=430226126]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ig7tw")
+
+[node name="Panel" type="Panel" parent="." unique_id=1698873889]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=941940851]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="ImageContainer" type="HFlowContainer" parent="ScrollContainer" unique_id=634541737]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Download" type="LineEdit" parent="ScrollContainer/ImageContainer" unique_id=1011707633]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+tooltip_text = "Downloads an image given it's 64-bit ID"
+placeholder_text = "Download"
+alignment = 1
+expand_to_text_length = true
+
+[node name="Upload" type="Button" parent="ScrollContainer/ImageContainer" unique_id=1861788373]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+tooltip_text = "Uploads an image, providing it's 64-bit ID to use in-game"
+theme_override_font_sizes/font_size = 24
+text = "Upload"
+expand_icon = true
+
+[node name="Loading" type="Panel" parent="." unique_id=1941795765]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="Loading" unique_id=1248562799]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2
+anchor_top = 0.5
+anchor_right = 0.8
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 30
+
+[node name="LoadDecal" type="FileDialog" parent="." unique_id=1649163835]
+oversampling_override = 1.0
+title = "Open a File"
+initial_position = 1
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.png", "*.jpg", "*.tga", "*.webp", "*.svg", "*.ktx", "*.exr")
+use_native_dialog = true
+folder_creation_enabled = false
+favorites_enabled = false
+recent_list_enabled = false
+deleting_enabled = false
+
+[node name="Message" type="TextEdit" parent="." unique_id=1839483914]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.8
+anchor_right = 0.5
+anchor_bottom = 0.8
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_readonly_color = Color(1, 1, 1, 1)
+theme_override_colors/background_color = Color(0.3764706, 0.3764706, 0.3764706, 0.5019608)
+theme_override_colors/current_line_color = Color(0.067673184, 0.06767279, 0.07093149, 0.8)
+text = "TEST TEXT"
+editable = false
+scroll_fit_content_height = true
+scroll_fit_content_width = true
+
+[connection signal="text_submitted" from="ScrollContainer/ImageContainer/Download" to="." method="DownloadImage"]
+[connection signal="pressed" from="ScrollContainer/ImageContainer/Upload" to="." method="StartUploadImage"]
+[connection signal="file_selected" from="LoadDecal" to="." method="UploadImage"]
+[connection signal="mouse_entered" from="Message" to="." method="MouseEnterMessageBox"]
+[connection signal="mouse_exited" from="Message" to="." method="MouseExitMessageBox"]
