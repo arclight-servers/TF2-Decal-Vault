@@ -261,7 +261,24 @@ public partial class Main : Control
 		try
 		{
 			ImageInput.Clear();
-			ulong id = ulong.Parse(input);
+
+			ulong id;
+
+			if (input.Length == 16)
+			{
+				string high = input.Left(8);
+				string low = input.Right(8);
+
+				id = (((ulong)high.HexToInt()) << 32) + (ulong)low.HexToInt();
+
+				if(GameFormatedId(id) != input)
+					throw new Exception("Could not convert code to uint64 \"" + input + "\" vs \"" + GameFormatedId(id) + "\"");
+			}
+			else
+			{
+				id = ulong.Parse(input);
+			}
+			
 			LoadingBar.Value = 0.0f;
 			Loading.Show();
 			DownloadImageAsync(id);
