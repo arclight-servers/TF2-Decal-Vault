@@ -31,12 +31,21 @@ func _ready() -> void:
 	LoadDecal = get_node("LoadDecal")
 	Loading = get_node("Loading")
 	LoadingBar = Loading.get_node("ProgressBar")
+	var upload = ImageContainer.get_node("Upload")
 
 	if MessageText == null:
 		ImageInput.text_submitted.connect(download_image_code)
+		upload.pressed.connect(start_upload_image)
+		LoadDecal.file_selected.connect(upload_image)
+		Message.mouse_entered.connect(message_mouse_entered)
+		Message.mouse_exited.connect(message_mouse_exited)
+
 		var result = Steam.download_ugc_result.connect(_on_download_ugc_result)
 		if result != OK:
 			MessageText = "Connecting callback download_ugc_result failed"
+		result = Steam.file_share_result.connect(_on_file_share_result)
+		if result != OK:
+			MessageText = "Connecting callback file_share_result failed"
 
 	Message.hide()
 	if MessageText == null:
@@ -78,6 +87,12 @@ func show_message(message: String, time: float) -> void:
 	MessageTimeLeft = time
 	print(message)
 
+func message_mouse_entered() -> void:
+	MouseHoveringOver = true
+
+func message_mouse_exited() -> void:
+	MouseHoveringOver = false
+
 func code_to_int(code: String) -> int:
 	var high = code.left(8).hex_to_int()
 	var low = code.right(8).hex_to_int()
@@ -115,7 +130,7 @@ func start_upload_image() -> void:
 	LoadDecal.popup()
 
 func upload_image(file: String) -> void:
-	LoadingBar.value = 0.0
+	LoadingBar.value = 1.0
 	Loading.show()
 
 	var image = Image.load_from_file(file)
@@ -124,12 +139,37 @@ func upload_image(file: String) -> void:
 		Loading.hide()
 		return
 
-	LoadingBar.value = 1.0
+	LoadingBar.value = 2.0
 	if image.get_size() != DecalSize:
 		image.resize(128, 128)
 	
-	LoadingBar.value = 10.0
+	LoadingBar.value = 3.0
 	var png = image.save_png_to_buffer()
+	
+	LoadingBar.value = 4.0
+	var storage = "my_custom_images/0.png"
+
+	LoadingBar.value = 5.0
+	if !Steam.fileWrite(storage, png):
+		show_message("Failed to save local copy of custom image \"" + storage + "\"", 8)
+		Loading.hide()
+		return
+
+	LoadingBar.value = 6.0
+	Steam.fileShare(storage)
+
+func _on_file_share_result(result: Steam.Result, handle: int, _name: String) -> void:
+	LoadingBar.value = 90.0
+	if result != Steam.Result.RESULT_OK:
+		show_message("Custom texture uploaded to cloud FAILED. (Error %s)" % result, 8)
+		Loading.hide()
+		return
+	
+	LoadingBar.value = 91.0
+	show_message("Custom texture uploaded to cloud completed OK, assigned UGC ID " + int_to_code(handle), 3)
+	Steam.fileDelete(name)
+
+	download_image(handle)
 
 func download_image_code(code: String) -> void:
 	download_image(code_to_int(code))
@@ -140,6 +180,7 @@ func download_image(id: int) -> void:
 	Steam.ugcDownload(id, 0)
 
 func _on_download_ugc_result(result: Steam.Result, download_data: Dictionary) -> void:
+	LoadingBar.value = 90.0
 	if result != Steam.Result.RESULT_OK:
 		show_message("Download of custom image file from UFS failed. (Error %s)" % result, 8)
 		Loading.hide()
