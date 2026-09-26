@@ -266,10 +266,7 @@ public partial class Main : Control
 
 			if (input.Length == 16)
 			{
-				string high = input.Left(8);
-				string low = input.Right(8);
-
-				id = (((ulong)high.HexToInt()) << 32) + (ulong)low.HexToInt();
+				id = ulong.Parse(input, System.Globalization.NumberStyles.HexNumber);
 
 				if(GameFormatedId(id) != input)
 					throw new Exception("Could not convert code to uint64 \"" + input + "\" vs \"" + GameFormatedId(id) + "\"");
