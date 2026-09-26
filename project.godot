@@ -12,7 +12,7 @@ config_version=5
 
 config/name="TF2DecalVault"
 run/main_scene="uid://co3l6oi6vuyir"
-config/features=PackedStringArray("4.6", "C#", "GL Compatibility")
+config/features=PackedStringArray("4.6", "GL Compatibility")
 boot_splash/show_image=false
 config/icon="res://icon.svg"
 
@@ -24,6 +24,10 @@ window/stretch/aspect="expand"
 
 project/assembly_name="TF2DecalVault"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godotsteam/plugin.cfg")
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
@@ -33,3 +37,8 @@ project/assembly_name="TF2DecalVault"
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+
+[steam]
+
+initialization/app_data/app_id=440
+initialization/processes/embed_callbacks=true

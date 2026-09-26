@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://co3l6oi6vuyir"]
 
-[ext_resource type="Script" uid="uid://icfnei4a3an1" path="res://Main.cs" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://kkvxcdr3nq14" path="res://main.gd" id="1_ig7tw"]
 
 [node name="Main" type="Control" unique_id=430226126]
 layout_mode = 3
@@ -97,9 +97,3 @@ text = "TEST TEXT"
 editable = false
 scroll_fit_content_height = true
 scroll_fit_content_width = true
-
-[connection signal="text_submitted" from="ScrollContainer/ImageContainer/Download" to="." method="DownloadImage"]
-[connection signal="pressed" from="ScrollContainer/ImageContainer/Upload" to="." method="StartUploadImage"]
-[connection signal="file_selected" from="LoadDecal" to="." method="UploadImage"]
-[connection signal="mouse_entered" from="Message" to="." method="MouseEnterMessageBox"]
-[connection signal="mouse_exited" from="Message" to="." method="MouseExitMessageBox"]

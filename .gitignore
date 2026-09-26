@@ -1,8 +1,9 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
-Facepunch.Steamworks
+addons/godotsteam
 release/
 *.dll
 *.so
 *.lib
+*.uid
