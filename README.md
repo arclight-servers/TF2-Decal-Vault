@@ -5,6 +5,8 @@
 ## Download:
 **[View Releases](https://github.com/arclight-servers/TF2-Decal-Vault/releases)**
 
+AUR Package available (Arch Linux): `yay -S tf2decalvault-bin`
+
 ## Building:
 - [Godot Engine v4.6.2.stable.official](https://godotengine.org/download/archive/4.6.2-stable) (newer versions may work too)
 - [GodotSteam](https://godotsteam.com/getting_started/what_are_you_making/#singleplayer-or-multiplayer-games) (GDScript) or [Facepunch.Steamworks](https://github.com/Facepunch/Facepunch.Steamworks) (.NET)
