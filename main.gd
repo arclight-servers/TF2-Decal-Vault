@@ -55,16 +55,16 @@ func _ready() -> void:
 		Loading.show()
 		LoadingBar.hide()
 	
-	var dir = DirAccess.open("user://saveddecals")
+	var dir = DirAccess.open("user://newdecals")
 	if dir == null:
-		DirAccess.make_dir_absolute("user://saveddecals")
+		DirAccess.make_dir_absolute("user://newdecals")
 		DirAccess.make_dir_absolute("user://invaliddecals")
 	else:
 		var files = dir.get_files()
 		for file in files:
 			var id = file.to_int()
 			if id != 0:
-				add_image_file("user://saveddecals/" + file, id)
+				add_image_file("user://newdecals/" + file, id)
 				print(id, " | ", int_to_code(id), " | ", String.num_uint64(id, 10))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -147,7 +147,8 @@ func upload_image(file: String) -> void:
 	var png = image.save_png_to_buffer()
 	
 	LoadingBar.value = 4.0
-	var storage = "my_custom_images/0.png"
+	var storage = "my_custom_images/%.0f.png" % Time.get_unix_time_from_system()
+	print(storage)
 
 	LoadingBar.value = 5.0
 	if !Steam.fileWrite(storage, png):
@@ -212,7 +213,7 @@ func _on_download_ugc_result(result: Steam.Result, download_data: Dictionary) ->
 	var valid = image.get_size() == DecalSize
 	var filepath
 	if valid:
-		filepath = "user://saveddecals/" + String.num_int64(id) + ".png"
+		filepath = "user://newdecals/" + String.num_int64(id) + ".png"
 	else:
 		show_message("Image downloaded not valid for decals " + image.GetSize(), 8)
 		filepath = "user://invaliddecals/" + String.num_int64(id) + ".png"
