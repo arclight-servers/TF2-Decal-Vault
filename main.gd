@@ -37,6 +37,7 @@ func _ready() -> void:
 		ImageInput.text_submitted.connect(download_image_code)
 		upload.pressed.connect(start_upload_image)
 		LoadDecal.file_selected.connect(upload_image)
+		get_window().files_dropped.connect(_on_files_dropped)
 		Message.mouse_entered.connect(message_mouse_entered)
 		Message.mouse_exited.connect(message_mouse_exited)
 
@@ -112,6 +113,13 @@ func int_to_code(id: int) -> String:
 		low = ~low
 	
 	return "%08X%08X" % [high, low]
+
+func _on_files_dropped(files: PackedStringArray) -> void:
+	if files.size() > 1:
+		show_message("Only drop one image at a time.", 8)
+		return
+
+	upload_image(files[0])
 
 func add_image_file(file: String, id: int) -> void:
 	add_image(ImageTexture.create_from_image(Image.load_from_file(file)), id)
